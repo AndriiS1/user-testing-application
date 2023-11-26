@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.Repositories;
 using Domain.Services;
 using Infrastructure.DataBase;
 using Infrastructure.DataBase.Context;
@@ -50,6 +51,10 @@ namespace ServerPesentation.Extensions
         public static void AddHashService(this IServiceCollection services)
         {
             services.AddSingleton<IHashService, HashService>();
+        }
+        public static void AddValiadtionService(this IServiceCollection services)
+        {
+            services.AddSingleton<IValidationService, ValidationService>();
         }
 
         public static void AddUnitOfWork(this IServiceCollection services)

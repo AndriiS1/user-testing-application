@@ -28,7 +28,7 @@ namespace ServerPesentation.Controllers
 
         [HttpPost(Name = "Register")]
         [AllowAnonymous]
-        public ActionResult Register(User user)
+        public IActionResult Register(User user)
         {
             if (_validationService.UserIsValid(user))
             {

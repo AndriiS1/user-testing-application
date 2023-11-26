@@ -28,6 +28,11 @@ namespace Infrastructure.Repositories
             return _context.Set<TEntity>().Find(id);
         }
 
+        public TEntity? Single(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _context.Set<TEntity>().Single(predicate);
+        }
+
         public IEnumerable<TEntity> GetAll()
         {
             return _context.Set<TEntity>().ToList();

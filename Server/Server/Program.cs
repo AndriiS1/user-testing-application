@@ -9,11 +9,13 @@ namespace Server
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddAuthorization();
+            builder.Services.AddControllers();
 
+            builder.AddServerDbContext();
+            builder.ConfigureJWT();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-            builder.ConfigureDB();
+            builder.Services.AddCustomizedSwagger();
+            builder.Services.AddJwtService();
 
             var app = builder.Build();
 

@@ -1,4 +1,7 @@
-﻿using Infrastructure.DataBase.Context;
+﻿using Domain;
+using Domain.Services;
+using Infrastructure.DataBase;
+using Infrastructure.DataBase.Context;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +34,6 @@ namespace ServerPesentation.Extensions
                     ValidateIssuerSigningKey = true
                 };
             });
-            builder.Services.AddAuthorization();
         }
 
         public static void AddServerDbContext(this WebApplicationBuilder builder)
@@ -42,7 +44,17 @@ namespace ServerPesentation.Extensions
 
         public static void AddJwtService(this IServiceCollection services) 
         {
-            services.AddSingleton<JwtService>();
+            services.AddSingleton<IJwtService, JwtService>();
+        }
+
+        public static void AddHashService(this IServiceCollection services)
+        {
+            services.AddSingleton<IHashService, HashService>();
+        }
+
+        public static void AddUnitOfWork(this IServiceCollection services)
+        {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
         public static void AddCustomizedSwagger(this IServiceCollection services)

@@ -1,4 +1,3 @@
-
 using ServerPesentation.Extensions;
 
 namespace Server
@@ -16,6 +15,8 @@ namespace Server
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddCustomizedSwagger();
             builder.Services.AddJwtService();
+            builder.Services.AddHashService();
+            builder.Services.AddUnitOfWork();
 
             var app = builder.Build();
 
@@ -25,9 +26,13 @@ namespace Server
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.MapControllers();
 
             app.Run();
         }

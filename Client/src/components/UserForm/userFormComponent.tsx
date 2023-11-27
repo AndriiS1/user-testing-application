@@ -28,6 +28,9 @@ export default function UserForm(props: { formType: userFormType }) {
     const emailRegexPatter = new RegExp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
     const passwordRegexPatter = new RegExp("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$");
 
+    const userLoginDataIsValid = !emailError && !passwordError;
+    const userRegisterDataIsValid = !emailError && !passwordError && !firstNameError && !secondNameError;
+
     const HandleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
         if (!emailRegexPatter.test(email)) {
@@ -70,10 +73,12 @@ export default function UserForm(props: { formType: userFormType }) {
 
     const handleLoginSubmit = async () => {
         try {
-            await AuthService.login(email, password);
+            if (userLoginDataIsValid) {
+                await AuthService.login(email, password);
 
-            if (localStorage.getItem("userTokens") !== null) {
-                navigate("/");
+                if (localStorage.getItem("userTokens") !== null) {
+                    navigate("/");
+                }
             }
         } catch (error) {
             console.log(error);
@@ -83,9 +88,11 @@ export default function UserForm(props: { formType: userFormType }) {
 
     const handleRegisterSubmit = async () => {
         try {
-            await AuthService.register({firstName, secondName, email, password});
-            if (localStorage.getItem("user") != null) {
-                navigate("/");
+            if (userRegisterDataIsValid) {
+                await AuthService.register({ firstName, secondName, email, password });
+                if (localStorage.getItem("user") != null) {
+                    navigate("/");
+                }
             }
         } catch (error) {
             console.log(error);

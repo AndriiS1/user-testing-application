@@ -2,6 +2,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { AppBar, Box, Button, Toolbar } from "@mui/material";
 import "./mainComponentStyle.css";
+import AuthService from "../../Services/auth.service";
 
 export default function Root() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export default function Root() {
             <div className="name-info">
               {token && `${tokenClaims?.name} ${tokenClaims?.family_name}`}
             </div>
-            <Button sx={{ color: 'white', display: 'block', boxShadow: 'none' }} onClick={() => { localStorage.removeItem("jwtToken"); navigate("/login") }}>Log out</Button>
+            <Button sx={{ color: 'white', display: 'block', boxShadow: 'none' }} onClick={() => { AuthService.logout(); navigate("/login") }}>Log out</Button>
           </Toolbar>
         </AppBar>
         <Outlet/>

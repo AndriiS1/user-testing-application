@@ -3,7 +3,7 @@ import './userFormComponentStyle.css';
 import { Form, Link, useNavigate } from "react-router-dom";
 import { Button, FormControl, Input } from "@mui/base";
 import { Snackbar, TextField } from "@mui/material";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import AuthService from "../../Services/auth.service";
 
 export enum userFormType {
@@ -18,6 +18,7 @@ export default function UserForm(props: { formType: userFormType }) {
     const [firstName, setFirstName] = useState<string>('');
     const [secondName, setSecondName] = useState<string>('');
     const [open, setOpen] = useState<boolean>(false);
+    const [axiosErrorMessage, setAxiosErrorMessage] = useState<any>("");
 
     const [emailError, setEmailError] = useState<boolean>(false);
     const [passwordError, setPasswordError] = useState<boolean>(false);
@@ -90,11 +91,14 @@ export default function UserForm(props: { formType: userFormType }) {
         try {
             if (userRegisterDataIsValid) {
                 await AuthService.register({ firstName, secondName, email, password });
-                if (localStorage.getItem("user") != null) {
+                console.log("redirect");
+                if (localStorage.getItem("userTokens") !== null) {
                     navigate("/");
                 }
             }
-        } catch (error) {
+        } catch (e) {
+            const error = e as AxiosError;
+            setAxiosErrorMessage(error.response?.data);
             console.log(error);
             setOpen(true);
         }
@@ -119,7 +123,6 @@ export default function UserForm(props: { formType: userFormType }) {
                                 placeholder="Name"
                                 className="input-box"
                                 size="small"
-                                id="outlined-error"
                                 label="First name"
                             />
                         </FormControl>
@@ -131,7 +134,6 @@ export default function UserForm(props: { formType: userFormType }) {
                                 placeholder="Surname"
                                 className="input-box"
                                 size="small"
-                                id="outlined-error"
                                 label="Second name"
                             />
                         </FormControl>
@@ -145,7 +147,6 @@ export default function UserForm(props: { formType: userFormType }) {
                         placeholder="example@gmail.com"
                         className="input-box"
                         size="small"
-                        id="outlined-error"
                         label="Email"
                     />
                 </FormControl>
@@ -158,7 +159,6 @@ export default function UserForm(props: { formType: userFormType }) {
                         placeholder="Password"
                         className="input-box"
                         size="small"
-                        id="outlined-error"
                         label="Password"
                     />
                 </FormControl>
@@ -176,7 +176,7 @@ export default function UserForm(props: { formType: userFormType }) {
                     open={open}
                     onClose={handleClose}
                     autoHideDuration={4000}
-                    message="Wrong user data!"
+                    message={axiosErrorMessage}
                 />
             </Form>
         </div>

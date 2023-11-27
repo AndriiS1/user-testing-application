@@ -52,8 +52,14 @@ namespace ServerPesentation.Controllers
         {
             if (_validationService.UserIsValid(user))
             {
+                var tryFindExistingUser = _unitOfWork.Users.FirstOrDefault(u => u.Email== user.Email);
+                if (tryFindExistingUser != null) 
+                {
+                    return BadRequest("User with this email already exists.");
+                }
                 user.Password = _hashService.getHash(user.Password ?? "");
                 _unitOfWork.Users.Add(user);
+                _unitOfWork.Complete();
                 var acessToken = _jwtService.GenerateJSONWebToken(user);
                 var refreshTokenDataDto = _jwtService.GenerateRefreshTokenData();
                 _unitOfWork.Users.UpdateUserRefreshTokenData(user.Id, refreshTokenDataDto);

@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Infrastructure.DataBase.Seeding;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.DataBase.Context
@@ -34,6 +35,8 @@ namespace Infrastructure.DataBase.Context
             .WithOne(e => e.User)
             .HasForeignKey(e => e.UserId)
             .IsRequired(false);
+
+            DataSeeder.SeedData(modelBuilder);
         }
 
         public DbSet<User> Users { get; set; }

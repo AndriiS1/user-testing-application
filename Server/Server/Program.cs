@@ -17,7 +17,8 @@ namespace Server
             builder.Services.AddJwtService();
             builder.Services.AddHashService();
             builder.Services.AddUnitOfWork();
-            builder.Services.AddValiadtionService();
+            builder.Services.AddValidationService();
+            builder.Services.AddCustomCORS();
 
             var app = builder.Build();
 

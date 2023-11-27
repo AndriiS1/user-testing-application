@@ -51,7 +51,7 @@ namespace ServerPesentation.Extensions
         {
             services.AddSingleton<IHashService, HashService>();
         }
-        public static void AddValiadtionService(this IServiceCollection services)
+        public static void AddValidationService(this IServiceCollection services)
         {
             services.AddSingleton<IValidationService, ValidationService>();
         }
@@ -59,6 +59,21 @@ namespace ServerPesentation.Extensions
         public static void AddUnitOfWork(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+        }
+
+        public static void AddCustomCORS(this IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder
+                        .WithOrigins("http://localhost:3000")
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
         }
 
         public static void AddCustomizedSwagger(this IServiceCollection services)

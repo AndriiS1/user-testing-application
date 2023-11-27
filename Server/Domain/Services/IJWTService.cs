@@ -1,17 +1,13 @@
-﻿using Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Domain.Dto;
+using Domain.Models;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Services
 {
     public interface IJwtService
     {
         string GenerateJSONWebToken(User user);
-        RefreshTokenData GenerateRefreshTokenData();
+        RefreshTokenDataDto GenerateRefreshTokenData();
         ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token);
     }
 }

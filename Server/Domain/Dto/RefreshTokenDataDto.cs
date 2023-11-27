@@ -4,14 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Models
+namespace Domain.Dto
 {
-    public class RefreshTokenData
+    public class RefreshTokenDataDto
     {
-        public long Id { get; set; }
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
-        public long? UserId { get; set; }
-        public User? User { get; set; }
     }
 }

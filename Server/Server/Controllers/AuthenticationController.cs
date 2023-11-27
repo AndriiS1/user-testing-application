@@ -36,8 +36,11 @@ namespace ServerPesentation.Controllers
             var user = _unitOfWork.Users.Single(u => u.Password == _hashService.getHash(loginData.Password) && u.Email == loginData.Email);
             if (user != null)
             {
-                var tokenString = _jwtService.GenerateJSONWebToken(user);
-                response = Ok(new { token = tokenString });
+                var accessToken = _jwtService.GenerateJSONWebToken(user);
+                var refreshTokenDataDto = _jwtService.GenerateRefreshTokenData();
+                _unitOfWork.Users.UpdateUserRefreshTokenData(user.Id, refreshTokenDataDto);
+                _unitOfWork.Complete();
+                response = Ok(new { accessToken = accessToken, refreshToken = refreshTokenDataDto.RefreshToken});
             }
             return response;
         }
@@ -52,10 +55,10 @@ namespace ServerPesentation.Controllers
                 user.Password = _hashService.getHash(user.Password ?? "");
                 _unitOfWork.Users.Add(user);
                 var acessToken = _jwtService.GenerateJSONWebToken(user);
-                var refreshTokenData = _jwtService.GenerateRefreshTokenData();
-                user.RefreshTokenData = refreshTokenData;
+                var refreshTokenDataDto = _jwtService.GenerateRefreshTokenData();
+                _unitOfWork.Users.UpdateUserRefreshTokenData(user.Id, refreshTokenDataDto);
                 _unitOfWork.Complete();
-                return Ok(new { acessToken = acessToken, refreshToken = refreshTokenData.RefreshToken });
+                return Ok(new { acessToken = acessToken, refreshToken = refreshTokenDataDto.RefreshToken });
             }
             else
             {
@@ -81,25 +84,26 @@ namespace ServerPesentation.Controllers
                 return BadRequest("Invalid access token or refresh token");
             }
 
-            string userIdentifier = principal?.FindFirst(JwtRegisteredClaimNames.NameId).Value;
+            var sad = principal?.FindFirst(JwtRegisteredClaimNames.NameId);
+
+            string userIdentifier = principal?.FindFirst(c=> c.Type == JwtRegisteredClaimNames.NameId).Value;
 
             var user = _unitOfWork.Users.Single(u => u.Id == long.Parse(userIdentifier));
 
-            if (user == null || user.RefreshTokenData.RefreshToken != refreshToken || user.RefreshTokenData.RefreshTokenExpiryTime <= DateTime.Now)
+            if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
             {
                 return BadRequest("Invalid access token or refresh token");
             }
 
             var newAccessToken = _jwtService.GenerateJSONWebToken(user);
-            var newRefreshToken = _jwtService.GenerateRefreshTokenData();
-
-            user.RefreshTokenData = newRefreshToken;
+            var newRefreshTokenDataDto = _jwtService.GenerateRefreshTokenData();
+            _unitOfWork.Users.UpdateUserRefreshTokenData(user.Id, newRefreshTokenDataDto);
             _unitOfWork.Complete();
 
             return Ok(new
             {
                 accessToken = newAccessToken,
-                refreshToken = newRefreshToken.RefreshToken
+                refreshToken = newRefreshTokenDataDto.RefreshToken
             });
         }
     }

@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Domain.Dto;
+using Domain.Models;
 using Domain.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -21,7 +22,6 @@ namespace Infrastructure.Services
         public string GenerateJSONWebToken(User user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             _ = int.TryParse(_config["JWT:TokenValidityInMinutes"], out int tokenValidityInMinutes);
 
             var claims = new List<Claim> {
@@ -30,27 +30,28 @@ namespace Infrastructure.Services
                 new Claim(JwtRegisteredClaimNames.FamilyName, user.SecondName)
             };
 
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-              _config["Jwt:Issuer"],
+            var token = new JwtSecurityToken(
+              issuer: _config["Jwt:Issuer"],
+              audience: _config["Jwt:Audience"],
               claims,
               expires: DateTime.Now.AddMinutes(tokenValidityInMinutes),
-              signingCredentials: credentials);
+              signingCredentials: new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256));
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public RefreshTokenData GenerateRefreshTokenData()
+        public RefreshTokenDataDto GenerateRefreshTokenData()
         {
             var randomNumber = new byte[64];
             using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(randomNumber);
             _ = int.TryParse(_config["JWT:RefreshTokenValidityInDays"], out int tokenValidityInMinutes);
-            RefreshTokenData refreshTokenData = new RefreshTokenData()
+            RefreshTokenDataDto refreshTokenDataDto = new RefreshTokenDataDto()
             {
                 RefreshToken = Convert.ToBase64String(randomNumber),
                 RefreshTokenExpiryTime = DateTime.Now.AddMinutes(tokenValidityInMinutes)
             };
-            return refreshTokenData;
+            return refreshTokenDataDto;
         }
 
         public ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token)
@@ -60,7 +61,7 @@ namespace Infrastructure.Services
                 ValidateAudience = false,
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:Secret"])),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:Key"])),
                 ValidateLifetime = false
             };
 

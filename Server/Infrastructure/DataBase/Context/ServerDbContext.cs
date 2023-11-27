@@ -12,14 +12,8 @@ namespace Infrastructure.DataBase.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.RefreshTokenData)
-            .WithOne(d => d.User)
-                .HasForeignKey<RefreshTokenData>(e => e.UserId)
-                .IsRequired(false);
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<RefreshTokenData> RefreshTokens { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace Server
             builder.Services.AddUnitOfWork();
             builder.Services.AddValidationService();
             builder.Services.AddCustomCORS();
+            builder.Services.AddCunstomControllersView();
 
             var app = builder.Build();
 

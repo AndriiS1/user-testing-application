@@ -31,7 +31,7 @@ namespace ServerPesentation.Controllers
         [Route("tests")]
         public IActionResult LoginController()
         {
-            var tests = _unitOfWork.Tests.GetAll();
+            var tests = _unitOfWork.Tests.GetTestsWithRelatedData(1);
             return Ok(new{ tests});
         }
     }

@@ -42,7 +42,7 @@ namespace ServerPesentation.Extensions
                 options => options.UseSqlServer(builder.Configuration.GetConnectionString("Database")));
         }
 
-        public static void AddJwtService(this IServiceCollection services) 
+        public static void AddJwtService(this IServiceCollection services)
         {
             services.AddSingleton<IJwtService, JwtService>();
         }
@@ -74,6 +74,14 @@ namespace ServerPesentation.Extensions
                         .AllowAnyMethod();
                 });
             });
+        }
+
+        public static void AddCunstomControllersView(this IServiceCollection services)
+        {
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
         }
 
         public static void AddCustomizedSwagger(this IServiceCollection services)

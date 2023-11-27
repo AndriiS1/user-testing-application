@@ -9,12 +9,14 @@ namespace Infrastructure.DataBase
     {
         private readonly ServerDbContext _context;
         public IUserRepository Users { get; private set; }
+        public ITestRepository Tests { get; private set; }
 
         private bool disposed = false;
         public UnitOfWork(ServerDbContext context)
         {
             _context = context;
             Users = new UserRepository(_context);
+            Tests = new TestRepository(_context);
         }
 
         public int Complete()

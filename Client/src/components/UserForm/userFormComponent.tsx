@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import './userFormComponentStyle.css';
 import { Form, Link, useNavigate } from "react-router-dom";
 import { Button, FormControl, Input } from "@mui/base";
-import { FormLabel, Snackbar, TextField } from "@mui/material";
+import { Snackbar, TextField } from "@mui/material";
 import axios from "axios";
-import { authentication_route, registration_route } from "../../ApiRoutes/apiRoutes";
-// import { setToken } from "../../stores/tokenReducer";
-// import { useAppDispatch, useAppSelector } from "../../stores/userStore";
+import AuthService from "../../Services/auth.service";
 
 export enum userFormType {
     login,
@@ -14,8 +12,6 @@ export enum userFormType {
 }
 
 export default function UserForm(props: { formType: userFormType }) {
-    // const token = useAppSelector(state => state.tokens.token);
-    // const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -74,13 +70,9 @@ export default function UserForm(props: { formType: userFormType }) {
 
     const handleLoginSubmit = async () => {
         try {
-            const response = await axios.post(`${authentication_route}`, {
-                email: email,
-                password: password
-            });
-            localStorage.setItem("jwtToken", response.data.token);
+            await AuthService.login(email, password);
 
-            if (localStorage.getItem !== null) {
+            if (localStorage.getItem("userTokens") !== null) {
                 navigate("/");
             }
         } catch (error) {
@@ -91,14 +83,8 @@ export default function UserForm(props: { formType: userFormType }) {
 
     const handleRegisterSubmit = async () => {
         try {
-            const response = await axios.post(`${registration_route}`, {
-                firstName: firstName,
-                secondName: secondName,
-                email: email,
-                password: password
-            });
-            localStorage.setItem("jwtToken", response.data.token);
-            if (localStorage.getItem != null) {
+            await AuthService.register({firstName, secondName, email, password});
+            if (localStorage.getItem("user") != null) {
                 navigate("/");
             }
         } catch (error) {

@@ -1,6 +1,5 @@
 ﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Metadata;
 
 namespace Infrastructure.DataBase.Context
 {
@@ -15,5 +14,6 @@ namespace Infrastructure.DataBase.Context
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Test> Tests { get; set; }
     }
 }

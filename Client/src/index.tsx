@@ -6,6 +6,7 @@ import ErrorPage from "./components/ErrorPage/errorPageComponent";
 import { createBrowserRouter, RouterProvider, } from "react-router-dom";
 import UserForm, { userFormType } from './components/UserForm/userFormComponent';
 import ProtectedWrap from './components/ProtectedWrap/protectedWrapComponent';
+import TestsList from './components/TestsList/testsListComponent';
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <></>
+        element: <TestsList></TestsList>
       },
       {
         path: "history",

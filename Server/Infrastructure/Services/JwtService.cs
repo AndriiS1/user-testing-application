@@ -54,7 +54,7 @@ namespace Infrastructure.Services
             return refreshTokenDataDto;
         }
 
-        public ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token)
+        public IEnumerable<Claim>? GetPrincipalFromExpiredToken(string? token)
         {
             var tokenValidationParameters = new TokenValidationParameters
             {
@@ -66,11 +66,12 @@ namespace Infrastructure.Services
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
+            tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
             if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
                 throw new SecurityTokenException("Invalid token");
 
-            return principal;
+            var jsonToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+            return jsonToken?.Claims;
         }
     }
 }

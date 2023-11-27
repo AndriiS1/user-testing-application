@@ -8,6 +8,6 @@ namespace Domain.Services
     {
         string GenerateJSONWebToken(User user);
         RefreshTokenDataDto GenerateRefreshTokenData();
-        ClaimsPrincipal? GetPrincipalFromExpiredToken(string? token);
+        IEnumerable<Claim>? GetPrincipalFromExpiredToken(string? token);
     }
 }

@@ -78,17 +78,15 @@ namespace ServerPesentation.Controllers
             string? accessToken = tokenData.AccessToken;
             string? refreshToken = tokenData.RefreshToken;
 
-            var principal = _jwtService.GetPrincipalFromExpiredToken(accessToken);
-            if (principal == null)
+            var claims = _jwtService.GetPrincipalFromExpiredToken(accessToken);
+            if (claims == null)
             {
                 return BadRequest("Invalid access token or refresh token");
             }
 
-            var sad = principal?.FindFirst(JwtRegisteredClaimNames.NameId);
+            var userId = claims.Single(claim => claim.Type == JwtRegisteredClaimNames.NameId.ToString())?.Value;
 
-            string userIdentifier = principal?.FindFirst(c=> c.Type == JwtRegisteredClaimNames.NameId).Value;
-
-            var user = _unitOfWork.Users.Single(u => u.Id == long.Parse(userIdentifier));
+            var user = _unitOfWork.Users.Single(u => u.Id == long.Parse(userId));
 
             if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
             {

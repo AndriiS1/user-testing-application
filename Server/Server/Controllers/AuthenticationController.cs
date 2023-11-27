@@ -60,11 +60,11 @@ namespace ServerPesentation.Controllers
                 user.Password = _hashService.getHash(user.Password ?? "");
                 _unitOfWork.Users.Add(user);
                 _unitOfWork.Complete();
-                var acessToken = _jwtService.GenerateJSONWebToken(user);
+                var accessToken = _jwtService.GenerateJSONWebToken(user);
                 var refreshTokenDataDto = _jwtService.GenerateRefreshTokenData();
                 _unitOfWork.Users.UpdateUserRefreshTokenData(user.Id, refreshTokenDataDto);
                 _unitOfWork.Complete();
-                return Ok(new { acessToken = acessToken, refreshToken = refreshTokenDataDto.RefreshToken });
+                return Ok(new { accessToken = accessToken, refreshToken = refreshTokenDataDto.RefreshToken });
             }
             else
             {

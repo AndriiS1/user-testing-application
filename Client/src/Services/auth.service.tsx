@@ -38,7 +38,17 @@ class AuthService {
             secondName: registerData.secondName,
             email: registerData.email,
             password: registerData.password,
-        });
+        })
+        .then(response => {
+            if (response.data.accessToken) {
+                TokenService.setUserTokens({
+                    accessToken: response.data.accessToken,
+                    refreshToken: response.data.refreshToken
+                });
+            }
+
+            return response.data;
+        });;
     }
 
     getCurrentUser() {

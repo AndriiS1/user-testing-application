@@ -3,8 +3,9 @@ import './userFormComponentStyle.css';
 import { Form, Link, useNavigate } from "react-router-dom";
 import { Button, FormControl, Input } from "@mui/base";
 import { Snackbar, TextField } from "@mui/material";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import AuthService from "../../Services/auth.service";
+import TokenService from "../../Services/token.service";
 
 export enum userFormType {
     login,
@@ -77,7 +78,7 @@ export default function UserForm(props: { formType: userFormType }) {
             if (userLoginDataIsValid) {
                 await AuthService.login(email, password);
 
-                if (localStorage.getItem("userTokens") !== null) {
+                if (TokenService.getUserTokens()) {
                     navigate("/");
                 }
             }
@@ -91,9 +92,9 @@ export default function UserForm(props: { formType: userFormType }) {
         try {
             if (userRegisterDataIsValid) {
                 await AuthService.register({ firstName, secondName, email, password });
-                console.log("redirect");
-                if (localStorage.getItem("userTokens") !== null) {
+                if (TokenService.getUserTokens()) {
                     navigate("/");
+                    console.log("redirect");
                 }
             }
         } catch (e) {

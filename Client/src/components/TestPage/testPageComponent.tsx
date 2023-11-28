@@ -42,9 +42,11 @@ export default function TestsPage() {
         });
     }
 
-    useEffect(() => {
-        console.log(userAnswers)
-    }, [userAnswers]);
+    const getMark= async () => {
+        let response = await TestService.GetMark(userAnswers);
+        console.log(response)
+    }
+
 
     return (
         <div className="questions-container">
@@ -52,7 +54,7 @@ export default function TestsPage() {
             {questions?.map(question => (
                 <QuestionBlock key={question.id} question={question} questionIndex={questions.indexOf(question)} setAnswer={setUserAnswer} />
             ))}
-            <Button>Submit</Button>
+            <Button onClick={getMark}>Submit</Button>
         </div>
     )
 }

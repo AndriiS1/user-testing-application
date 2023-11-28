@@ -3,6 +3,7 @@ using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Dto;
 using Microsoft.AspNetCore.Authorization;
+using Domain.Models;
 
 namespace ServerPesentation.Controllers
 {
@@ -55,6 +56,17 @@ namespace ServerPesentation.Controllers
                 return Ok(questions);
             }
             return NotFound("Test with this id not found.");
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("get-mark")]
+        public IActionResult GetMark(IEnumerable<QuestionAnswer> userAnswers)
+        {
+            double answersCount = userAnswers.Count();
+            double correctAnswersCount = userAnswers.Count(a => a.IsCorrect == true);
+            double result = Math.Round(correctAnswersCount / answersCount, 1);
+            return Ok(result);
         }
     }
 }

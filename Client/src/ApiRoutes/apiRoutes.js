@@ -6,4 +6,6 @@ export const refresh_route = `/Authentication/refresh-token`;
 
 export const get_all_tests_route = `/Test/tests`;
 export const get_tests_route = `/Test/test`;
-export const get_test_questions_with_answers = `/Test/questions-with-answers`;
+export const get_test_questions_with_answers_route = `/Test/questions-with-answers`;
+
+export const get_mark_route = `/Test/get-mark`;

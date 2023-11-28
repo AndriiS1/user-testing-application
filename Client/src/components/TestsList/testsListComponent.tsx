@@ -9,12 +9,7 @@ export default function TestsList(){
 
     const setNotDoneTasks = async () => {
         let response = await TestService.GetAll();
-        let x = [];
-        for(let i = 0; i < 10; i++)
-        {
-            x[i] = response[0];
-        }
-        setUserTests(x);
+        setUserTests(response);
     }
 
     useEffect(() => {
@@ -26,7 +21,7 @@ export default function TestsList(){
             {userTests != undefined && userTests.length > 0 ?
                 <div className="tests-container">
                     {userTests.map(i =>
-                        <TestCard key={i.id} title={i.title} category={i.category} description={i.desription}/>)}
+                        <TestCard key={i.id} title={i.title} category={i.category} description={i.description}/>)}
                 </div>
                 : <div className="task-info">
                     <h1>You have no active tasks.<br />Let's add them.</h1>

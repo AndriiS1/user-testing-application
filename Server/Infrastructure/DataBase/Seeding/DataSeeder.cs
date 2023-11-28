@@ -17,7 +17,7 @@ namespace Infrastructure.DataBase.Seeding
 
             var tests = new List<Test>
             {
-                new Test { Id = 1, Title = "Algebra Harvard testing", Category = TestCategory.Math, Desription = "The test provided by harvard to deeply test your math knowledge", UserId = 1 }
+                new Test { Id = 1, Title = "Algebra Harvard testing", Category = TestCategory.Math, Description = "The test provided by harvard to deeply test your math knowledge"}
             };
             modelBuilder.Entity<Test>().HasData(tests);
 

@@ -7,9 +7,7 @@ namespace Domain.Models
         public long Id { get; set; }
         public string? Title { get; set; }
         public TestCategory? Category { get; set; }
-        public string? Desription { get; set; }
-        public long? UserId { get; set; }
-        public User? User { get; set; }
+        public string? Description { get; set; }
         public ICollection<TestQuestion> Questions { get; } = new List<TestQuestion>();
     }
 }

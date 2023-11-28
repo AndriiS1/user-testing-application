@@ -9,3 +9,4 @@ export const get_tests_route = `/Test/test`;
 export const get_test_questions_with_answers_route = `/Test/questions-with-answers`;
 
 export const get_mark_route = `/Test/get-mark`;
+export const test_passed_route = `/Test/test-passed`;

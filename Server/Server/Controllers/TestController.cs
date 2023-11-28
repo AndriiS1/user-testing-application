@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.Dto;
 using Domain.Models;
 using Domain.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -90,13 +91,13 @@ namespace ServerPesentation.Controllers
         [Authorize]
         [HttpPost]
         [Route("test-passed")]
-        public IActionResult TestPassed(long testId, double mark)
+        public IActionResult TestPassed(TestPassedDto passedData)
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;
             if (claimsIdentity != null)
             {
                 var userId = long.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-                PassedTestData testData = new PassedTestData() { Mark = mark, UserId = userId, TestId = testId };
+                PassedTestData testData = new PassedTestData() { Mark = passedData.Mark, UserId = userId, TestId = passedData.TestId };
                 _unitOfWork.PassedTestDatas.Add(testData);
                 _unitOfWork.Complete();
                 return Ok();

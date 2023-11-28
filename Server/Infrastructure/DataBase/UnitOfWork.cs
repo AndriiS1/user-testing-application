@@ -11,7 +11,6 @@ namespace Infrastructure.DataBase
         public IUserRepository Users { get; private set; }
         public ITestRepository Tests { get; private set; }
         public IAnswerRepository Answers { get; private set; }
-
         public IPassedTestDataRepository PassedTestDatas { get; private set; }
 
         private bool disposed = false;
@@ -21,6 +20,7 @@ namespace Infrastructure.DataBase
             Users = new UserRepository(_context);
             Tests = new TestRepository(_context);
             Answers = new AnswerRepository(_context);
+            PassedTestDatas = new PassedTestDataRepository(_context);
         }
 
         public int Complete()

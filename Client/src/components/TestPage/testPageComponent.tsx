@@ -10,7 +10,7 @@ export default function TestsPage() {
     const location = useLocation();
     const navigate = useNavigate();
     const [open, setOpen] = useState<boolean>(false);
-    const [mark, setMark] = useState<number>();
+    const [mark, setMark] = useState<number>(0);
     const testId = new URLSearchParams(location.search).get('testId');
 
     const [questions, setQuestions] = useState<Question[]>([]);
@@ -44,14 +44,12 @@ export default function TestsPage() {
         });
     }
 
-    const getMark = async () => {
-        let response = await TestService.GetMark(userAnswers);
-        setMark(response * 100);
-    }
-
-    const handleGetMark = () => {
+    const handleSubmit = async () => {
         if (userAnswers.length == questions.length) {
-            getMark();
+            let response = await TestService.GetMark(userAnswers);
+            let markInPercents = response*100;
+            await setMark(markInPercents)
+            TestService.PassTest(Number(test?.id), markInPercents)
             setOpen(true);
         }
     }
@@ -83,7 +81,7 @@ export default function TestsPage() {
                 {questions?.map(question => (
                     <QuestionBlock key={question.id} question={question} questionIndex={questions.indexOf(question)} setAnswer={setUserAnswer} />
                 ))}
-                <Button onClick={handleGetMark}>Submit</Button>
+                <Button onClick={handleSubmit}>Submit</Button>
             </div>
         </>
     )

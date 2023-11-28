@@ -96,7 +96,6 @@ export default function UserForm(props: { formType: userFormType }) {
                 await AuthService.register({ firstName, secondName, email, password });
                 if (TokenService.getUserTokens()) {
                     navigate("/");
-                    console.log("redirect");
                 }
             }
         } catch (e) {

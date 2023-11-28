@@ -19,6 +19,9 @@ export default function TestsPage() {
 
     const setTestQuestions = async () => {
         let response = await TestService.GetTestQuestionsWithAnswers(Number(testId));
+        if(response.length <= 0){
+            navigate("/");
+        }
         setQuestions(response);
     }
 

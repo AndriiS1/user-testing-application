@@ -4,11 +4,13 @@ import "./testPageComponentStyle.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import TestService from "../../Services/test.service";
 import QuestionBlock from "./QuestionBlock/QuestionBlockComponent";
-import { Button } from "@mui/material";
+import { Box, Button, Modal, Typography } from "@mui/material";
 
 export default function TestsPage() {
     const location = useLocation();
     const navigate = useNavigate();
+    const [open, setOpen] = useState<boolean>(false);
+    const [mark, setMark] = useState<number>();
     const testId = new URLSearchParams(location.search).get('testId');
 
     const [questions, setQuestions] = useState<Question[]>([]);
@@ -42,19 +44,47 @@ export default function TestsPage() {
         });
     }
 
-    const getMark= async () => {
+    const getMark = async () => {
         let response = await TestService.GetMark(userAnswers);
-        console.log(response)
+        setMark(response);
     }
 
+    const handleGetMark = () => {
+        if (userAnswers.length == questions.length) {
+            getMark();
+            setOpen(true);
+        }
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+        navigate("/");
+    }
 
     return (
-        <div className="questions-container">
-            <h1>{test?.title}</h1>
-            {questions?.map(question => (
-                <QuestionBlock key={question.id} question={question} questionIndex={questions.indexOf(question)} setAnswer={setUserAnswer} />
-            ))}
-            <Button onClick={getMark}>Submit</Button>
-        </div>
+        <>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box className='box-style'>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Congratulations
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        {`Your mark is: ${mark}%`}
+                    </Typography>
+                </Box>
+            </Modal>
+            <div className="questions-container">
+                <h1>{test?.title}</h1>
+                {questions?.map(question => (
+                    <QuestionBlock key={question.id} question={question} questionIndex={questions.indexOf(question)} setAnswer={setUserAnswer} />
+                ))}
+                <Button onClick={handleGetMark}>Submit</Button>
+            </div>
+        </>
     )
 }

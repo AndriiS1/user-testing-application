@@ -7,24 +7,41 @@ import Typography from '@mui/material/Typography';
 import CardMedia from '@mui/material/CardMedia';
 import { TestCategory } from '../../types';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const mathCardBackground = require("../../../Static/Images/Cards/math-card-back.jpg");
 const programmingCardBackground = require("../../../Static/Images/Cards/programming-card-back.jpg");
 const spaceCardBackground = require("../../../Static/Images/Cards/space-card-back.jpg");
 
-export default function TestCard(props: { id:number, title: string, category: number, description: string }) {
+export default function TestCard(props: { id: number, title: string, category: number, description: string }) {
   const navigate = useNavigate();
-
-  const startHandler = () =>{
+  let backgroundUrl;
+  const startHandler = () => {
     navigate(`/test?testId=${props.id}`);
   }
+
+  useEffect(() => {
+    if (TestCategory[props.category] == "Math") {
+      backgroundUrl = mathCardBackground;
+    }
+    else if (TestCategory[props.category] == "Programming") {
+      backgroundUrl = programmingCardBackground;
+    }
+    else if (TestCategory[props.category] == "Space") {
+      backgroundUrl = spaceCardBackground;
+    }
+    else{
+      backgroundUrl = "";
+    }
+  });
+
 
   return (
     <Card sx={{ minWidth: 275, maxWidth: 400, margin: 2 }}>
       <CardMedia
         component="img"
         sx={{ height: 140 }}
-        src={TestCategory[props.category] == "Math" ? mathCardBackground : ""}
+        src={backgroundUrl}
         title="green iguana"
       />
       <CardContent>

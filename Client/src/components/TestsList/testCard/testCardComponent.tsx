@@ -9,6 +9,9 @@ import { TestCategory } from '../../types';
 import { useNavigate } from 'react-router-dom';
 
 const mathCardBackground = require("../../../Static/Images/Cards/math-card-back.jpg");
+const programmingCardBackground = require("../../../Static/Images/Cards/programming-card-back.jpg");
+const spaceCardBackground = require("../../../Static/Images/Cards/space-card-back.jpg");
+
 export default function TestCard(props: { id:number, title: string, category: number, description: string }) {
   const navigate = useNavigate();
 

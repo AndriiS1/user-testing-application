@@ -23,8 +23,8 @@ export default function TestsList() {
                     {userTests.map(i =>
                         <TestCard key={i.id} id={i.id} title={i.title} category={i.category} description={i.description} />)}
                 </div>
-                : <div className="task-info">
-                    <h1>Here are no tests.</h1>
+                : <div className="no-tests">
+                    <h1>No available tests .</h1>
                 </div>
             }
         </div>

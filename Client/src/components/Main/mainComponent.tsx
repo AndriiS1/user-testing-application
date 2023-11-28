@@ -3,11 +3,11 @@ import jwt_decode from "jwt-decode";
 import { AppBar, Box, Button, Toolbar } from "@mui/material";
 import "./mainComponentStyle.css";
 import AuthService from "../../Services/auth.service";
+import TokenService from "../../Services/token.service";
 
 export default function Root() {
   const navigate = useNavigate();
-  const token = localStorage.getItem("jwtToken");
-
+  let token = TokenService.getLocalAccessToken();
   const tokenClaims = token? jwt_decode<{ name: string, family_name: string }>(`${token}`) : undefined;
 
 
@@ -19,9 +19,6 @@ export default function Root() {
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               <Button sx={{ color: 'white', display: 'block', boxShadow: 'none' }} onClick={() => navigate("/")}>
                 Home
-              </Button>
-              <Button sx={{ color: 'white', display: 'block', boxShadow: 'none' }} onClick={() => navigate("/history")}>
-                History
               </Button>
             </Box>
             <div className="name-info">

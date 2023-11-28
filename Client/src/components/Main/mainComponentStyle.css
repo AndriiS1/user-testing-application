@@ -6,16 +6,10 @@
     overflow:auto;
 }
 
-.task-info h1{
+.no-tests h1{
     margin: auto;
     text-align: center;
     padding: 10%;
-}
-
-.add-task-container{
-    margin: 30px;
-    display: flex;
-    justify-content: center;
 }
 
 .modal-box{
@@ -35,8 +29,4 @@
 
 .name-info{
     transform: translateY(-2px);
-}
-
-.add-task-container button{
-    background-color: white;
 }

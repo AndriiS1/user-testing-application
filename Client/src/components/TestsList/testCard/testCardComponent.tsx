@@ -14,7 +14,7 @@ const mathCardBackground = require("../../../Static/Images/Cards/math-card-back.
 const programmingCardBackground = require("../../../Static/Images/Cards/programming-card-back.jpg");
 const spaceCardBackground = require("../../../Static/Images/Cards/space-card-back.jpg");
 
-export default function TestCard(props: { id: number, title: string, category: number, description: string }) {
+export default function TestCard(props: { id: number, title: string, category: number, description: string, mark: number | undefined }) {
   const navigate = useNavigate();
   const[backgroundUrl, setBackgroundUrl] = useState();
   const startHandler = () => {
@@ -54,7 +54,7 @@ export default function TestCard(props: { id: number, title: string, category: n
         </Typography>
       </CardContent>
       <CardActions className='start-button-wrap'>
-        <Button size="small" onClick={startHandler}>Start test</Button>
+        {props.mark ? <>You already complete the test: {props.mark}</>: <Button size="small" onClick={startHandler}>Start test</Button>}
       </CardActions>
     </Card>
   );

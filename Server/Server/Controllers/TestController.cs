@@ -104,5 +104,19 @@ namespace ServerPesentation.Controllers
             }
             return Unauthorized();
         }
+
+        [Authorize]
+        [HttpGet]
+        [Route("get-user-completed-tests-id")]
+        public IActionResult GetUserCompletedTestsId()
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            if (claimsIdentity != null)
+            {
+                var result = _unitOfWork.PassedTestDatas.Find(d => d.Mark != null).Select(t => new { testId = t.TestId, mark = t.Mark });
+                return Ok(result);
+            }
+            return Unauthorized();
+        }
     }
 }

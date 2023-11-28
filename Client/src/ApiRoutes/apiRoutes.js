@@ -10,3 +10,4 @@ export const get_test_questions_with_answers_route = `/Test/questions-with-answe
 
 export const get_mark_route = `/Test/get-mark`;
 export const test_passed_route = `/Test/test-passed`;
+export const user_completed_test_ids_route = `/Test/get-user-completed-tests-id`;

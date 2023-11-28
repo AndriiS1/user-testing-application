@@ -16,6 +16,11 @@ export type Answer = {
   title: string
 }
 
+export type CompletedTestDto = {
+  testId: number
+  mark: number
+}
+
 export enum TestCategory {
   Space,
   Programming,

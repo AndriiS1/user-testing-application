@@ -1,6 +1,6 @@
 import api from "./api";
 import TokenService from "./token.service";
-import { get_all_tests_route, get_test_questions_with_answers_route, get_tests_route, get_mark_route, test_passed_route } from '../ApiRoutes/apiRoutes';
+import { get_all_tests_route, get_test_questions_with_answers_route, get_tests_route, get_mark_route, test_passed_route, user_completed_test_ids_route } from '../ApiRoutes/apiRoutes';
 import { Answer } from "../components/types";
 
 class TestService {
@@ -52,6 +52,21 @@ class TestService {
     GetMark(userAnswers: Answer[]) {
         return api
             .post(`${get_mark_route}`, userAnswers)
+            .then(response => {
+                if (response.data.accessToken) {
+                    TokenService.setUserTokens({
+                        accessToken: response.data.accessToken,
+                        refreshToken: response.data.refreshToken
+                    });
+                }
+
+                return response.data;
+            });
+    }
+
+    GetAllUserPassedTestIds() {
+        return api
+            .get(`${user_completed_test_ids_route}`)
             .then(response => {
                 if (response.data.accessToken) {
                     TokenService.setUserTokens({

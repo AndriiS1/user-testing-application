@@ -5,6 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CardMedia from '@mui/material/CardMedia';
+import { TestCategory } from '../../types';
 
 const bull = (
   <Box
@@ -16,14 +17,13 @@ const bull = (
 );
 
 const mathCardBackground = require("../../../Static/Images/Cards/math-card-back.jpg");
-
 export default function TestCard(props: { title: string, category: number, description: string }) {
   return (
     <Card sx={{ minWidth: 275, maxWidth: 400, margin: 2 }}>
       <CardMedia
         component="img"
         sx={{ height: 140 }}
-        src={props.category == 2 ? mathCardBackground : ""}
+        src={TestCategory[props.category] == "Math" ? mathCardBackground : ""}
         title="green iguana"
       />
       <CardContent>

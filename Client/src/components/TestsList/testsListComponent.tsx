@@ -24,7 +24,7 @@ export default function TestsList(){
                         <TestCard key={i.id} title={i.title} category={i.category} description={i.description}/>)}
                 </div>
                 : <div className="task-info">
-                    <h1>You have no active tasks.<br />Let's add them.</h1>
+                    <h1>Here is no tests.</h1>
                 </div>
             }
         </div>

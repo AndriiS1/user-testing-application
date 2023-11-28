@@ -46,7 +46,7 @@ export default function TestsPage() {
 
     const getMark = async () => {
         let response = await TestService.GetMark(userAnswers);
-        setMark(response);
+        setMark(response * 100);
     }
 
     const handleGetMark = () => {

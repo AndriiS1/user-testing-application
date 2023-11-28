@@ -13,7 +13,7 @@ instance.interceptors.request.use(
   (config) => {
     const token = TokenService.getLocalAccessToken();
     if (token) {
-      config.headers["x-access-token"] = token;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
   },

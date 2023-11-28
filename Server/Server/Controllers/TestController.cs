@@ -1,9 +1,8 @@
-﻿using Domain.Services;
-using Domain;
-using Microsoft.AspNetCore.Mvc;
-using Domain.Dto;
-using Microsoft.AspNetCore.Authorization;
+﻿using Domain;
 using Domain.Models;
+using Domain.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ServerPesentation.Controllers
 {
@@ -27,7 +26,7 @@ namespace ServerPesentation.Controllers
         }
 
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet]
         [Route("tests")]
         public IActionResult GetTestsController()
@@ -36,7 +35,7 @@ namespace ServerPesentation.Controllers
             return Ok(tests);
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet]
         [Route("test")]
         public IActionResult GetTestController(long testId)
@@ -45,7 +44,7 @@ namespace ServerPesentation.Controllers
             return Ok(tests);
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet]
         [Route("questions-with-answers")]
         public IActionResult GetQuestionsWithAnswersController(long? testId)
@@ -53,18 +52,35 @@ namespace ServerPesentation.Controllers
             if (testId != null)
             {
                 var questions = _unitOfWork.Tests.GetQuestionsWithAnswers(testId).ToList();
-                return Ok(questions);
+                var questionsWithoutIsCorrectAttribure = questions.Select(q => new
+                {
+                    id = q.Id,
+                    title = q.Title,
+                    testId = q.TestId,
+                    answers = q.Answers.Select(a => new
+                    {
+                        a.Id,
+                        a.Title,
+                        a.TestQuestionId
+                    })
+                });
+                return Ok(questionsWithoutIsCorrectAttribure);
             }
             return NotFound("Test with this id not found.");
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpPost]
         [Route("get-mark")]
         public IActionResult GetMark(IEnumerable<QuestionAnswer> userAnswers)
         {
             double answersCount = userAnswers.Count();
-            double correctAnswersCount = userAnswers.Count(a => a.IsCorrect == true);
+            List<QuestionAnswer>? answersWithIsCorrectAtribute = new List<QuestionAnswer>();
+            foreach (QuestionAnswer userAnswer in userAnswers)
+            {
+                answersWithIsCorrectAtribute.Add(_unitOfWork.Answers.Single(a => a.Id == userAnswer.Id));
+            }
+            var correctAnswersCount = answersWithIsCorrectAtribute.Count(a => a.IsCorrect == true);
             double result = Math.Round(correctAnswersCount / answersCount, 1);
             return Ok(result);
         }

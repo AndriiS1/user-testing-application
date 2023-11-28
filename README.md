@@ -1,4 +1,10 @@
 # user-testing-application
+Preview:
+![Alt text](image.png)
+
+# Getting Started with served
+
+Just run update database to seed all tests in package manager console.
 
 # Getting Started with React Client
 

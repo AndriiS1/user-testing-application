@@ -29,10 +29,19 @@ namespace ServerPesentation.Controllers
         [AllowAnonymous]
         [HttpGet]
         [Route("tests")]
-        public IActionResult LoginController()
+        public IActionResult GetTestsController()
         {
             var tests = _unitOfWork.Tests.GetAll().ToList();
             return Ok(tests);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("questions-with-answers")]
+        public IActionResult GetQuestionsWithAnswersController(long testId)
+        {
+            var questions = _unitOfWork.Tests.GetQuestionsWithAnswers(testId).ToList();
+            return Ok(questions);
         }
     }
 }

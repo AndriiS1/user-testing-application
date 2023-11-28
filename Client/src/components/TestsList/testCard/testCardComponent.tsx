@@ -6,18 +6,16 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CardMedia from '@mui/material/CardMedia';
 import { TestCategory } from '../../types';
-
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-  >
-    •
-  </Box>
-);
+import { useNavigate } from 'react-router-dom';
 
 const mathCardBackground = require("../../../Static/Images/Cards/math-card-back.jpg");
-export default function TestCard(props: { title: string, category: number, description: string }) {
+export default function TestCard(props: { id:number, title: string, category: number, description: string }) {
+  const navigate = useNavigate();
+
+  const startHandler = () =>{
+    navigate(`/test?testId=${props.id}`);
+  }
+
   return (
     <Card sx={{ minWidth: 275, maxWidth: 400, margin: 2 }}>
       <CardMedia
@@ -28,19 +26,17 @@ export default function TestCard(props: { title: string, category: number, descr
       />
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          {props.category}
+          {TestCategory[props.category]}
         </Typography>
         <Typography variant="h5" component="div">
           {props.title}
         </Typography>
         <Typography variant="body2">
           {props.description}
-          <br />
-          {'"a benevolent smile"'}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Start test</Button>
+        <Button size="small" onClick={startHandler}>Start test</Button>
       </CardActions>
     </Card>
   );

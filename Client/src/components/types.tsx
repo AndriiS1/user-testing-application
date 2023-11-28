@@ -1,11 +1,22 @@
 export type Test = {
-  id: number;
+  id: number
   title: string
   category: number
   description: string
 };
 
-export enum TestCategory{
+export type Question = {
+  id: number
+  title: string
+  answers: Answer[]
+}
+
+export type Answer = {
+  id: number
+  title: string
+}
+
+export enum TestCategory {
   Space,
   Programming,
   Math

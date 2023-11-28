@@ -7,7 +7,8 @@ import Typography from '@mui/material/Typography';
 import CardMedia from '@mui/material/CardMedia';
 import { TestCategory } from '../../types';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import "./testCardComponentStyle.css";
 
 const mathCardBackground = require("../../../Static/Images/Cards/math-card-back.jpg");
 const programmingCardBackground = require("../../../Static/Images/Cards/programming-card-back.jpg");
@@ -15,29 +16,26 @@ const spaceCardBackground = require("../../../Static/Images/Cards/space-card-bac
 
 export default function TestCard(props: { id: number, title: string, category: number, description: string }) {
   const navigate = useNavigate();
-  let backgroundUrl;
+  const[backgroundUrl, setBackgroundUrl] = useState();
   const startHandler = () => {
     navigate(`/test?testId=${props.id}`);
   }
 
   useEffect(() => {
     if (TestCategory[props.category] == "Math") {
-      backgroundUrl = mathCardBackground;
+      setBackgroundUrl(mathCardBackground);
     }
     else if (TestCategory[props.category] == "Programming") {
-      backgroundUrl = programmingCardBackground;
+      setBackgroundUrl(programmingCardBackground);
     }
     else if (TestCategory[props.category] == "Space") {
-      backgroundUrl = spaceCardBackground;
-    }
-    else{
-      backgroundUrl = "";
+      setBackgroundUrl(spaceCardBackground);
     }
   });
 
 
   return (
-    <Card sx={{ minWidth: 275, maxWidth: 400, margin: 2 }}>
+    <Card sx={{ minWidth: 275, maxWidth: 400, margin: 2 }} className='card-wrap'>
       <CardMedia
         component="img"
         sx={{ height: 140 }}
@@ -55,7 +53,7 @@ export default function TestCard(props: { id: number, title: string, category: n
           {props.description}
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions className='start-button-wrap'>
         <Button size="small" onClick={startHandler}>Start test</Button>
       </CardActions>
     </Card>

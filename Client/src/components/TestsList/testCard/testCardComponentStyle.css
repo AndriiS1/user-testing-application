@@ -1,0 +1,8 @@
+.card-wrap{
+    display: flex;
+    flex-direction: column;
+}
+
+.start-button-wrap{
+    margin-top: auto;
+}

@@ -4,6 +4,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import CardMedia from '@mui/material/CardMedia';
 
 const bull = (
   <Box
@@ -14,9 +15,17 @@ const bull = (
   </Box>
 );
 
-export default function TestCard(props: { title: string, category: string, description: string }) {
+const mathCardBackground = require("../../../Static/Images/Cards/math-card-back.jpg");
+
+export default function TestCard(props: { title: string, category: number, description: string }) {
   return (
-    <Card sx={{ minWidth: 275, maxWidth: 400 }}>
+    <Card sx={{ minWidth: 275, maxWidth: 400, margin: 2 }}>
+      <CardMedia
+        component="img"
+        sx={{ height: 140 }}
+        src={props.category == 2 ? mathCardBackground : ""}
+        title="green iguana"
+      />
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           {props.category}
@@ -31,7 +40,7 @@ export default function TestCard(props: { title: string, category: string, descr
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
+        <Button size="small">Start test</Button>
       </CardActions>
     </Card>
   );

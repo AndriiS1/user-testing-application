@@ -2,13 +2,19 @@ import { useEffect, useState } from "react";
 import TestCard from "./testCard/testCardComponent";
 import TestService from "../../Services/test.service";
 import { Test } from "../types";
+import "./testsListComponentStyle.css";
 
 export default function TestsList(){
     const [userTests, setUserTests] = useState<Test[] | undefined>();
 
     const setNotDoneTasks = async () => {
         let response = await TestService.GetAll();
-        setUserTests(response);
+        let x = [];
+        for(let i = 0; i < 10; i++)
+        {
+            x[i] = response[0];
+        }
+        setUserTests(x);
     }
 
     useEffect(() => {
@@ -16,9 +22,9 @@ export default function TestsList(){
     }, []);
     
     return(
-        <>
+        <div>
             {userTests != undefined && userTests.length > 0 ?
-                <div className="task-card-wrap">
+                <div className="tests-container">
                     {userTests.map(i =>
                         <TestCard key={i.id} title={i.title} category={i.category} description={i.desription}/>)}
                 </div>
@@ -26,6 +32,6 @@ export default function TestsList(){
                     <h1>You have no active tasks.<br />Let's add them.</h1>
                 </div>
             }
-        </>
+        </div>
     )
 }

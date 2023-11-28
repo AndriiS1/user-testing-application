@@ -37,11 +37,24 @@ namespace ServerPesentation.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        [Route("questions-with-answers")]
-        public IActionResult GetQuestionsWithAnswersController(long testId)
+        [Route("test")]
+        public IActionResult GetTestController(long testId)
         {
-            var questions = _unitOfWork.Tests.GetQuestionsWithAnswers(testId).ToList();
-            return Ok(questions);
+            var tests = _unitOfWork.Tests.SingleOrDefault(t => t.Id == testId);
+            return Ok(tests);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("questions-with-answers")]
+        public IActionResult GetQuestionsWithAnswersController(long? testId)
+        {
+            if (testId != null)
+            {
+                var questions = _unitOfWork.Tests.GetQuestionsWithAnswers(testId).ToList();
+                return Ok(questions);
+            }
+            return NotFound("Test with this id not found.");
         }
     }
 }

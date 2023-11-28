@@ -10,6 +10,6 @@ namespace Domain.Repositories
 {
     public interface ITestRepository : IRepository<Test>
     {
-        IEnumerable<TestQuestion> GetQuestionsWithAnswers(long testId);
+        IEnumerable<TestQuestion> GetQuestionsWithAnswers(long? testId);
     }
 }

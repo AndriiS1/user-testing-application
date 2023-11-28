@@ -10,9 +10,9 @@ namespace Infrastructure.Repositories
         {
 
         }
-        public IEnumerable<TestQuestion> GetQuestionsWithAnswers(long testId)
+        public IEnumerable<TestQuestion> GetQuestionsWithAnswers(long? testId)
         {
-            return _context.Set<TestQuestion>().Include(t => t.Answers);
+            return _context.Set<TestQuestion>().Where(t => t.TestId == testId).Include(t => t.Answers);
         }
 
         public IEnumerable<Test> GetTestsWithRelatedData()

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Question } from "../types";
+import { Question, Test } from "../types";
 import "./testPageComponentStyle.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import TestService from "../../Services/test.service";
+import QuestionBlock from "./QuestionBlock/QuestionBlockComponent";
 
 export default function TestsPage() {
     const location = useLocation();
@@ -10,28 +11,33 @@ export default function TestsPage() {
     const testId = new URLSearchParams(location.search).get('testId');
 
     const [questions, setQuestions] = useState<Question[]>();
+    const [test, setTest] = useState<Test>();
 
     const setTestQuestions = async () => {
-        let response = await TestService.GetTestsQuestionsWithAnswers();
-        console.log(response);
+        let response = await TestService.GetTestQuestionsWithAnswers(Number(testId));
         setQuestions(response);
     }
 
+    const setCurrentTest = async () =>{
+        let response = await TestService.GetTest(Number(testId));
+        setTest(response);
+    }
+    
     useEffect(() => {
         if (!testId) {
             navigate("/");
         }
         else {
+            setCurrentTest();
             setTestQuestions();
         }
     }, []);
 
     return (
-        <div className="questions-container">   
+        <div className="questions-container">
+            <h1>{test?.title}</h1>
             {questions?.map(question => (
-                <div key={question.id}>
-                    <h3>{question.title}</h3>
-                </div>
+                <QuestionBlock question={question}/>
             ))}
         </div>
     )

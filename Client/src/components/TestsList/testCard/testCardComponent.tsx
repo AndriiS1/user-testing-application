@@ -14,21 +14,18 @@ const bull = (
   </Box>
 );
 
-export default function TestCard() {
+export default function TestCard(props: { title: string, category: string, description: string }) {
   return (
-    <Card sx={{ minWidth: 275, maxWidth:400 }}>
+    <Card sx={{ minWidth: 275, maxWidth: 400 }}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Word of the Day
+          {props.category}
         </Typography>
         <Typography variant="h5" component="div">
-          be{bull}nev{bull}o{bull}lent
-        </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          adjective
+          {props.title}
         </Typography>
         <Typography variant="body2">
-          well meaning and kindly.
+          {props.description}
           <br />
           {'"a benevolent smile"'}
         </Typography>

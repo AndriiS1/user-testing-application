@@ -51,7 +51,7 @@ class AuthService {
         });;
     }
 
-    getCurrentUser() {
+    getCurrentUserTokens() {
         return TokenService.getUserTokens();
     }
 }

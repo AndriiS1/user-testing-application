@@ -82,7 +82,9 @@ export default function UserForm(props: { formType: userFormType }) {
                     navigate("/");
                 }
             }
-        } catch (error) {
+        } catch (e) {
+            const error = e as AxiosError;
+            setAxiosErrorMessage(error.response?.data);
             console.log(error);
             setOpen(true);
         }

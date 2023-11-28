@@ -32,8 +32,8 @@ namespace ServerPesentation.Controllers
         [Route("login")]
         public IActionResult LoginController(LoginDto loginData)
         {
-            IActionResult response = Unauthorized();
-            var user = _unitOfWork.Users.Single(u => u.Password == _hashService.getHash(loginData.Password) && u.Email == loginData.Email);
+            IActionResult response = Unauthorized("User not found.");
+            var user = _unitOfWork.Users.SingleOrDefault(u => u.Password == _hashService.getHash(loginData.Password) && u.Email == loginData.Email);
             if (user != null)
             {
                 var accessToken = _jwtService.GenerateJSONWebToken(user);

@@ -33,6 +33,11 @@ namespace Infrastructure.Repositories
             return _context.Set<TEntity>().Single(predicate);
         }
 
+        public TEntity? SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _context.Set<TEntity>().SingleOrDefault(predicate);
+        }
+
         public TEntity? FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
             return _context.Set<TEntity>().FirstOrDefault(predicate);

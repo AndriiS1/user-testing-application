@@ -12,5 +12,6 @@ namespace Domain.Models
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
         public ICollection<Test> Tests { get; } = new List<Test>();
+        public ICollection<PassedTestData> PassedTestDatas { get; } = new List<PassedTestData>();
     }
 }

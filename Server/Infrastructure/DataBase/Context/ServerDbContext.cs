@@ -24,6 +24,18 @@ namespace Infrastructure.DataBase.Context
             .HasForeignKey(a => a.TestQuestionId)
             .IsRequired(false);
 
+            modelBuilder.Entity<User>()
+            .HasMany(t => t.PassedTestDatas)
+            .WithOne(q => q.User)
+            .HasForeignKey(q => q.UserId)
+            .IsRequired(false);
+
+            modelBuilder.Entity<Test>()
+            .HasMany(t => t.PassedTestDatas)
+            .WithOne(q => q.Test)
+            .HasForeignKey(q => q.TestId)
+            .IsRequired(false);
+
             DataSeeder.SeedData(modelBuilder);
         }
 

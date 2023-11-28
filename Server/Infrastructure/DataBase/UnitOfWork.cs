@@ -12,6 +12,8 @@ namespace Infrastructure.DataBase
         public ITestRepository Tests { get; private set; }
         public IAnswerRepository Answers { get; private set; }
 
+        public IPassedTestDataRepository PassedTestDatas { get; private set; }
+
         private bool disposed = false;
         public UnitOfWork(ServerDbContext context)
         {

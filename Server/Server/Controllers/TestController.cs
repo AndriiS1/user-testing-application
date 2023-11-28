@@ -3,6 +3,8 @@ using Domain.Models;
 using Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace ServerPesentation.Controllers
 {
@@ -83,6 +85,23 @@ namespace ServerPesentation.Controllers
             var correctAnswersCount = answersWithIsCorrectAtribute.Count(a => a.IsCorrect == true);
             double result = Math.Round(correctAnswersCount / answersCount, 1);
             return Ok(result);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("test-passed")]
+        public IActionResult TestPassed(long testId, double mark)
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            if (claimsIdentity != null)
+            {
+                var userId = long.Parse(claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                PassedTestData testData = new PassedTestData() { Mark = mark, UserId = userId, TestId = testId };
+                _unitOfWork.PassedTestDatas.Add(testData);
+                _unitOfWork.Complete();
+                return Ok();
+            }
+            return Unauthorized();
         }
     }
 }

@@ -9,5 +9,6 @@ namespace Domain.Models
         public TestCategory? Category { get; set; }
         public string? Description { get; set; }
         public ICollection<TestQuestion> Questions { get; } = new List<TestQuestion>();
+        public ICollection<PassedTestData> PassedTestDatas { get; } = new List<PassedTestData>();
     }
 }

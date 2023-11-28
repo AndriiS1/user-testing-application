@@ -6,8 +6,8 @@ namespace Domain
     {
         IUserRepository Users { get; }
         ITestRepository Tests { get; }
-
         IAnswerRepository Answers { get; }
+        IPassedTestDataRepository PassedTestDatas { get; }
         int Complete();
     }
 }
